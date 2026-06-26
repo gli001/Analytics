@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    alias='collection_emailsms'
+    alias='collection_pl_post_dq_emailsms_var2'
 ) }}
 
 WITH _base_population AS (
@@ -8,7 +8,7 @@ WITH _base_population AS (
         pdp.LoanID, 
         pdp.IndividualKey,
         pdp.CurrentProcessDate 
-    FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS pdp
+    FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS pdp
 ),
 
 -- Step 1: Get PL specific communications prior to CurrentProcessDate
