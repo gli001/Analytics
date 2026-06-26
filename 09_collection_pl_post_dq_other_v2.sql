@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_post_dq_other_v2'
+    alias='collection_pl_post_dq_other_var2'
 ) }}
 
 -- 1. Origination Attributes
@@ -15,7 +15,7 @@ WITH _origination_attributes AS (
         dl.IsJointApplication AS IsJointApplicationInd, 
         dl.PriorLoanCount,
         DATE_DIFF(CAST(bp.CurrentProcessDate AS DATE), CAST(dl.OriginationDate AS DATE), MONTH) AS MOBAmt
-    FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bp
+    FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bp
     LEFT JOIN {{ source('edw', 'dim_loan') }} AS dl 
         ON bp.LoanID = dl.LoanID
 ),
@@ -30,7 +30,7 @@ _due_date_change_features AS (
         COUNTIF(DATE_DIFF(CAST(bp.CurrentProcessDate AS DATE), CAST(enr.NewDueDateEffectiveFrom AS DATE), MONTH) <= 24) AS DueDateChangeLast24MthCount,
         MAX(CASE WHEN enr.NewDueDateEffectiveFrom IS NOT NULL THEN 1 ELSE 0 END) AS EverDDCInd,
         DATE_DIFF(CAST(bp.CurrentProcessDate AS DATE), MAX(CAST(enr.NewDueDateEffectiveFrom AS DATE)), DAY) AS DaysSinceLastDDCNon
-    FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bp
+    FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bp
     LEFT JOIN {{ source('LoanModPrograms', 'Enrollment') }} AS enr 
         ON bp.LoanID = enr.LoanId 
         AND CAST(enr.CreatedDate AS DATE) < bp.CurrentProcessDate 
@@ -55,7 +55,7 @@ _payment_drop_features AS (
             bp.CurrentProcessDate,
             pdd.PaymentDropStartDate,
             pdd.HigherPaymentStartDate
-        FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bp
+        FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bp
         LEFT JOIN {{ source('LoanModPrograms', 'Enrollment') }} AS enr 
             ON bp.LoanID = enr.LoanId 
             AND enr.AcceptedDate IS NOT NULL
@@ -86,7 +86,7 @@ _login_activity_features AS (
             bp.CurrentProcessDate,
             la.CreatedDate AS LoginDate,
             la.PasswordMatch
-        FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bp
+        FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bp
         LEFT JOIN {{ source('Circleone', 'Loans') }} AS cl 
             ON bp.LoanID = cl.LoanID
         LEFT JOIN {{ source('IDVSession', 'LoginAttempt') }} AS la
