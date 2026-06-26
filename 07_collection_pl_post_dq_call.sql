@@ -1,13 +1,13 @@
 {{ config(
     materialized='table',
-    alias='collection_call'
+    alias='collection_pl_post_dq_call_var2'
 ) }}
 
 WITH _base_population AS (
     SELECT 
         pdp.LoanID, 
         pdp.CurrentProcessDate 
-    FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS pdp
+    FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS pdp
 ),
 
 -- Get all call activity prior to snapshot date (unnest CallDetail)
