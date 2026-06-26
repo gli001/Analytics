@@ -1,10 +1,10 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_post_dq_pop_v2'
+    alias='collection_pl_post_dq_pop_var2'
 ) }}
 
 WITH _base_data AS (
-    SELECT * FROM {{ ref('collection_pl_post_dq_v2') }}
+    SELECT * FROM {{ ref('collection_pl_post_dq_var2') }}
 ),
 
 _dim_loan_data AS (
