@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_post_dq_comb'
+    alias='collection_pl_post_dq_comb_var2'
 ) }}
 
 WITH _combined_features AS (
@@ -144,20 +144,20 @@ WITH _combined_features AS (
         CASE WHEN DATE_DIFF(CAST(bp.CurrentProcessDate AS DATE), CAST(ot.OriginationDate AS DATE), DAY) < 30 THEN NULL ELSE em.PushSent30DayCount END AS PushSent30DayCount,
         em.DaysSinceLastPushNum
 
-    FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bp
-    LEFT JOIN {{ ref('collection_pl_post_dq_cv') }} AS cv 
+    FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bp
+    LEFT JOIN {{ ref('collection_pl_post_dq_cv_var2') }} AS cv 
         ON bp.LoanID = cv.LoanID AND bp.CurrentProcessDate = cv.CurrentProcessDate 
-    LEFT JOIN {{ ref('collection_pl_post_dq_score') }} AS scr 
+    LEFT JOIN {{ ref('collection_pl_post_dq_score_var2') }} AS scr 
         ON bp.LoanID = scr.LoanID AND bp.CurrentProcessDate = scr.CurrentProcessDate 
-    LEFT JOIN {{ ref('collection_pl_origination') }} AS orig 
+    LEFT JOIN {{ ref('collection_pl_origination_var2') }} AS orig 
         ON bp.LoanID = orig.LoanIDApp 
-    LEFT JOIN {{ ref('collection_pl_post_dq_pymt_del') }} AS pd 
+    LEFT JOIN {{ ref('collection_pl_post_dq_pymt_del_var2') }} AS pd 
         ON bp.LoanID = pd.LoanID AND bp.CurrentProcessDate = pd.CurrentProcessDate 
-    LEFT JOIN {{ ref('collection_pl_post_dq_other_v2') }} AS ot 
+    LEFT JOIN {{ ref('collection_pl_post_dq_other_var2') }} AS ot 
         ON bp.LoanID = ot.LoanID AND bp.CurrentProcessDate = ot.CurrentProcessDate 
-    LEFT JOIN {{ ref('collection_call') }} AS ca 
+    LEFT JOIN {{ ref('collection_pl_post_dq_call_var2') }} AS ca 
         ON bp.LoanID = ca.LoanID AND bp.CurrentProcessDate = ca.CurrentProcessDate 
-    LEFT JOIN {{ ref('collection_emailsms') }} AS em 
+    LEFT JOIN {{ ref('collection_pl_post_dq_emailsms_var2') }} AS em 
         ON bp.LoanID = em.LoanID AND bp.CurrentProcessDate = em.CurrentProcessDate
 )
 
