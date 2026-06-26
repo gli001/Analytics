@@ -1,13 +1,13 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_post_dq_pymt_del'
+    alias='collection_pl_post_dq_pymt_del_var2'
 ) }}
 
 WITH _base_population AS (
     SELECT 
         bd.LoanID, 
         bd.CurrentProcessDate 
-    FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bd
+    FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bd
 ),
 
 _payments_summary AS (
