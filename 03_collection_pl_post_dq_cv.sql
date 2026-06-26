@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_post_dq_cv'
+    alias='collection_pl_post_dq_cv_var2'
 ) }}
 WITH _credit_report_id_latest AS (
     SELECT * FROM (
@@ -13,7 +13,7 @@ WITH _credit_report_id_latest AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.LoanID 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CurrentProcessDate AS DATE), DAY) < 0
