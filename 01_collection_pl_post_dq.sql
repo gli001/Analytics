@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_post_dq_v2'
+    alias='collection_pl_post_dq_var2'
 ) }}
 
 WITH _loan_trail_base AS (
