@@ -1,13 +1,13 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_origination'
+    alias='collection_pl_origination_var2'
 ) }}
 WITH _application_decisions AS (
     SELECT 
         fadp.LoanID,
         fadp.ExternalApplicationDecisionID
     FROM {{ source('edw', 'fact_application_decision_pl') }} AS fadp
-    WHERE fadp.LoanID IN (SELECT bd.LoanID FROM {{ ref('collection_pl_post_dq_pop_v2') }} AS bd)
+    WHERE fadp.LoanID IN (SELECT bd.LoanID FROM {{ ref('collection_pl_post_dq_pop_var2') }} AS bd)
 ),
 _decision_offers AS (
     SELECT 
