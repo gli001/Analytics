@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    alias='collection_pl_post_dq_score'
+    alias='collection_pl_post_dq_score_var2'
 ) }}
 
 WITH _credit_report_current AS (
@@ -15,7 +15,7 @@ WITH _credit_report_current AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_cv') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_cv_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.LoanId 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CurrentProcessDate AS DATE), DAY) < 0
@@ -35,7 +35,7 @@ _credit_report_last_1_mth AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_cv') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_cv_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.LoanId 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CBDate AS DATE), MONTH) = -1
@@ -55,7 +55,7 @@ _credit_report_last_2_mth AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_cv') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_cv_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.LoanId 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CBDate AS DATE), MONTH) = -2
@@ -75,7 +75,7 @@ _credit_report_last_3_mth AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_cv') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_cv_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.LoanId 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CBDate AS DATE), MONTH) = -3
@@ -95,7 +95,7 @@ _credit_report_last_4_mth AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_cv') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_cv_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.LoanId 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CBDate AS DATE), MONTH) = -4
@@ -115,7 +115,7 @@ _credit_report_last_5_mth AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_cv') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_cv_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.LoanId 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CBDate AS DATE), MONTH) = -5
@@ -135,7 +135,7 @@ _credit_report_last_6_mth AS (
                 PARTITION BY bd.LoanID, bd.CurrentProcessDate 
                 ORDER BY pr.CreatedDate DESC
             ) AS RowNum 
-        FROM {{ ref('collection_pl_post_dq_cv') }} AS bd
+        FROM {{ ref('collection_pl_post_dq_cv_var2') }} AS bd
         LEFT JOIN {{ source('PortFolioMgmt', 'PortfolioReport') }} AS pr 
             ON bd.LoanID = pr.Id 
             AND DATE_DIFF(CAST(pr.CreatedDate AS DATE), CAST(bd.CBDate AS DATE), MONTH) = -6
